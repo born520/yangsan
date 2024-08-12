@@ -15,30 +15,25 @@ async function fetchRSSFeed(url) {
 async function displayFeed() {
     const url = "https://bg.raindrop.io/rss/public/29968199";
     const feedItems = await fetchRSSFeed(url);
-
     const container = document.getElementById('feed-container');
-    container.innerHTML = ''; // 기존 내용을 지웁니다
-
     feedItems.forEach(item => {
         const card = document.createElement('div');
         card.className = 'feed-item';
         
-        // 이미지 URL이 있는지 확인
-        if (item.enclosure && item.enclosure.link) {
-            const img = document.createElement('img');
-            img.src = item.enclosure.link;
-            img.alt = item.title || 'Feed Image';
-            card.appendChild(img);
-        }
-
+        const img = document.createElement('img');
+        img.src = item.enclosure.link || item.thumbnail;
+        img.alt = item.title;
+        
         const title = document.createElement('h3');
-        title.textContent = item.title || 'No Title';
-
+        title.textContent = item.title;
+        
         const description = document.createElement('p');
-        description.textContent = item.description || 'No Description';
-
+        description.textContent = item.description;
+        
+        card.appendChild(img);
         card.appendChild(title);
         card.appendChild(description);
+        
         container.appendChild(card);
     });
 }
